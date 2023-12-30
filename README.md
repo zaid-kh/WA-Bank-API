@@ -6,7 +6,7 @@ This project is a bank service built using Node.js/Express. It provides various 
 
 The bank service API can be used through the following url
 
-`https://zaid-bank-api.onrender.com`
+[https://zaid-bank-api.onrender.com](https://zaid-bank-api.onrender.com)
 
 jump to [here](#api-endpoints) for live server API usage OR continue for local installation
 
@@ -32,7 +32,7 @@ jump to [here](#api-endpoints) for live server API usage OR continue for local i
    npm start
    ```
 
-2. Access the bank service API at `http://localhost:8000/api/v1/`.
+2. Access the bank service API at [https://zaid-bank-api.onrender.com/api/v1/](https://zaid-bank-api.onrender.com/api/v1/) [http://localhost:8000/api/v1/](http://localhost:8000/api/v1/).
 
 ## API Endpoints
 
@@ -42,6 +42,9 @@ The following API endpoints are available:
 - `GET /users/:id`: Get details of a specific account.
 - `POST /users`: Create a new account.
 - `DELETE /users/:id`: Delete an account.
+- `PUT /users/:id/deposit`: Deposit cash to a user account.
+- `PUT /users/:id/withdraw`: Withdraw cash from a user's account.
+- `PUT /users/:from/transfer/:to`: Transfer cash from one user to another.
 
 ## License
 

@@ -159,7 +159,7 @@ export const deleteUser = async (req, res, next) => {
 
 /**
  * @desc Transfer cash from one user to another
- * @route PATCH /api/v1/users/:from/transfer/:to
+ * @route PUT /api/v1/users/:from/transfer/:to
  * @access public
  * @returns {Promise<Object>} The updated user object
  */

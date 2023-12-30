@@ -25,11 +25,19 @@ server.use(express.json());
 server.use("/api/v1/users", userRoutes);
 
 // todo: add route to '/'
-server.get("/", (res, req) => {
+server.get("/api/v1", (res, req) => {
   req.end(
     `follow the link to the documentation: 
     https://github.com/zaid-kh/WA-Bank-API?tab=readme-ov-file#wa--bank-api
     `
+  );
+});
+
+server.get("/", (res, req) => {
+  req.end(
+    `follow the link to the documentation: 
+    https://github.com/zaid-kh/WA-Bank-API?tab=readme-ov-file#wa--bank-api
+      `
   );
 });
 
