@@ -2,6 +2,8 @@ import STATUS_CODES from "../constants/statusCodes.js";
 import { readUsersFromFile, writeUsersToFile } from "../model/user.js";
 import { v4 as uuidv4 } from "uuid";
 
+let users = readUsersFromFile();
+
 // const users =
 /**
  * @desc Get all the users
@@ -11,7 +13,6 @@ import { v4 as uuidv4 } from "uuid";
 export const getAllUsers = async (req, res, next) => {
   // Implementation for getting all users
   try {
-    const users = readUsersFromFile();
     res.send(users);
   } catch (error) {
     res.status(404).send("No users found.");
@@ -45,7 +46,6 @@ export const createUser = async (req, res, next) => {
     }
     const userData = req.body;
     // check if user exists (checking for unique name)
-    const users = readUsersFromFile();
     if (
       users.some((user) => {
         user.name == userData.name;
@@ -69,11 +69,36 @@ export const createUser = async (req, res, next) => {
 };
 
 /**
+ * @desc Deposit cash to a user
+ * @route PUT /api/v1/users/:id/deposit
+ * @access public
+ * @returns {Promise<Object>} The updated user object
+ */
+export const depositToUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { amount } = req.body;
+    if (!amount) {
+      res.status(STATUS_CODES.BAD_REQUEST);
+      throw new Error("Amount is required");
+    }
+    const user = users.find((user) => user.ID == id);
+    if (!user) {
+      res.status(STATUS_CODES.NOT_FOUND);
+      throw new Error("User not found");
+    }
+    user.cash += amount;
+    writeUsersToFile(users);
+    res.send(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
  * @desc Update a user
  * @route PUT /api/v1/users/:id
  * @access public
- * @param {string} id - The ID of the user to be updated
- * @param {Object} userData - The updated data of the user
  * @returns {Promise<Object>} The updated user object
  */
 export const updateUser = async (id, userData) => {
