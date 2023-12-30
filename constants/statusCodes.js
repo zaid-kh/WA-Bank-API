@@ -1,4 +1,4 @@
-const STATUS_CODE = {
+const STATUS_CODES = {
   OK: 200,
   CREATED: 201,
   NO_CONTENT: 204,
@@ -10,4 +10,4 @@ const STATUS_CODE = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
-export default STATUS_CODE;
+export default STATUS_CODES;

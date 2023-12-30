@@ -1,10 +1,10 @@
 import "dotenv/config";
-import STATUS_CODE from "../constants/statusCodes.js";
+import STATUS_CODES from "../constants/statusCodes.js";
 
 export const errorHandler = (err, req, res, next) => {
   const statusCode =
-    res.statusCode === STATUS_CODE.OK
-      ? STATUS_CODE.INTERNAL_SERVER_ERROR
+    res.statusCode === STATUS_CODES.OK
+      ? STATUS_CODES.INTERNAL_SERVER_ERROR
       : res.statusCode;
   res.status(statusCode);
   res.send({
