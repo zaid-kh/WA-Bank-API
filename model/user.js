@@ -6,8 +6,16 @@ const readUsersFromFile = () => {
     const fileData = fs.readFileSync(filePath, "utf-8");
     return JSON.parse(fileData);
   } catch (error) {
-    throw new Error("Error reading from user file");
+    throw new Error("Error reading from users file");
   }
 };
 
-export { readUsersFromFile };
+const writeUsersToFile = (users) => {
+  try {
+    fs.writeFileSync(filePath, JSON.stringify(users), "utf-8");
+  } catch (error) {
+    throw new Error("Error writing to the users file");
+  }
+};
+
+export { readUsersFromFile, writeUsersToFile };

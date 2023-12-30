@@ -1,5 +1,6 @@
 import STATUS_CODES from "../constants/statusCodes.js";
-import { readUsersFromFile } from "../model/user.js";
+import { readUsersFromFile, writeUsersToFile } from "../model/user.js";
+import { v4 as uuidv4 } from "uuid";
 
 // const users =
 /**
@@ -13,7 +14,7 @@ export const getAllUsers = async (req, res, next) => {
     const users = readUsersFromFile();
     res.send(users);
   } catch (error) {
-    next(error);
+    res.status(404).send("No users found.");
   }
 };
 
@@ -21,22 +22,50 @@ export const getAllUsers = async (req, res, next) => {
  * @desc Get a user by ID
  * @route GET /api/v1/users/:id
  * @access public
- * @param {string} id - The ID of the user
  * @returns {Promise<Object>} The user object
  */
-export const getUserById = async (id) => {
+export const getUserById = async (req, res, next) => {
   // Implementation for getting a user by ID
+  const { id } = req.params;
 };
 
 /**
  * @desc Create a new user
  * @route POST /api/v1/users/
  * @access public
- * @param {Object} userData - The data of the user to be created
  * @returns {Promise<Object>} The created user object
  */
-export const createUser = async (userData) => {
-  // Implementation for creating a new user
+export const createUser = async (req, res, next) => {
+  try {
+    // get data from request body
+    const { name, birthdate, gender } = req.body;
+    if (!name || !birthdate || !gender) {
+      res.status(STATUS_CODES.BAD_REQUEST);
+      throw new Error("All fields (name, birthdate, gender) are required");
+    }
+    const userData = req.body;
+    // check if user exists (checking for unique name)
+    const users = readUsersFromFile();
+    if (
+      users.some((user) => {
+        user.name == userData.name;
+      })
+    ) {
+      res.status(STATUS_CODES.CONFLICT);
+      throw new Error("A user with the same name already exists");
+    }
+    const user = {
+      ID: uuidv4(),
+      ...userData,
+      cash: 0,
+      credit: 0,
+    };
+    users.push(user);
+    writeUsersToFile(users);
+    res.status(STATUS_CODES.CREATED).send(user);
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**
