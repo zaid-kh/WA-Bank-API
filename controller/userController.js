@@ -27,7 +27,17 @@ export const getAllUsers = async (req, res, next) => {
  */
 export const getUserById = async (req, res, next) => {
   // Implementation for getting a user by ID
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
+    const user = users.find((user) => user.ID == id);
+    if (!user) {
+      res.status(STATUS_CODES.NOT_FOUND);
+      throw new Error("User not found");
+    }
+    res.send(user);
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**
