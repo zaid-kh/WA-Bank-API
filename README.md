@@ -32,7 +32,7 @@ jump to [here](#api-endpoints) for live server API usage OR continue for local i
    npm start
    ```
 
-2. Access the bank service API at [https://zaid-bank-api.onrender.com/api/v1/](https://zaid-bank-api.onrender.com/api/v1/) [http://localhost:8000/api/v1/](http://localhost:8000/api/v1/).
+2. Access the bank service API at [https://zaid-bank-api.onrender.com/api/v1/](https://zaid-bank-api.onrender.com/api/v1/) OR [http://localhost:8000/api/v1/](http://localhost:8000/api/v1/).
 
 ## API Endpoints
 
