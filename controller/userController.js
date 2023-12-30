@@ -115,18 +115,47 @@ export const updateUser = async (id, userData) => {
   // Implementation for updating a user
 };
 
+export const withdrawFromUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { amount } = req.body;
+    if (!amount) {
+      res.status(STATUS_CODES.BAD_REQUEST);
+      throw new Error("Amount is required");
+    }
+    const user = users.find((user) => user.ID == id);
+    if (!user) {
+      res.status(STATUS_CODES.NOT_FOUND);
+      throw new Error("User not found");
+    }
+    if (user.cash < amount) {
+      res.status(STATUS_CODES.BAD_REQUEST);
+      throw new Error("Not enough cash");
+    }
+    user.cash -= amount;
+    writeUsersToFile(users);
+    res.send(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
 /**
  * @desc Delete a user
  * @route DELETE /api/v1/users/:id
  * @access public
- * @param {string} id - The ID of the user to be deleted
  * @returns {Promise<Object>} The deleted user object
  */
-export const deleteUser = async (id) => {
-  // Implementation for deleting a user
+export const deleteUser = async (req, res, next) => {
   try {
-  } catch (error) {
-    res.status(STATUS_CODES.BAD_REQUEST);
-    next(error);
-  }
+    const { id } = req.params;
+    const user = users.find((user) => user.ID == id);
+    if (!user) {
+      res.status(STATUS_CODES.NOT_FOUND);
+      throw new Error("User not found");
+    }
+    users = users.filter((user) => user.ID != id);
+    writeUsersToFile(users);
+    res.send(user);
+  } catch (error) {}
 };
