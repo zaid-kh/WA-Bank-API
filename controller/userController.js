@@ -106,15 +106,12 @@ export const depositToUser = async (req, res, next) => {
 };
 
 /**
- * @desc Update a user
- * @route PUT /api/v1/users/:id
+ *
+ * @desc Withdraw cash from a user
+ * @route PUT /api/v1/users/:id/withdraw
  * @access public
  * @returns {Promise<Object>} The updated user object
  */
-export const updateUser = async (id, userData) => {
-  // Implementation for updating a user
-};
-
 export const withdrawFromUser = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -158,4 +155,37 @@ export const deleteUser = async (req, res, next) => {
     writeUsersToFile(users);
     res.send(user);
   } catch (error) {}
+};
+
+/**
+ * @desc Transfer cash from one user to another
+ * @route PATCH /api/v1/users/:from/transfer/:to
+ * @access public
+ * @returns {Promise<Object>} The updated user object
+ */
+export const transferFromUser = async (req, res, next) => {
+  try {
+    const { from, to } = req.params;
+    const { amount } = req.body;
+    if (!amount) {
+      res.status(STATUS_CODES.BAD_REQUEST);
+      throw new Error("Amount is required");
+    }
+    const userFrom = users.find((user) => user.ID == from);
+    const userTo = users.find((user) => user.ID == to);
+    if (!userFrom || !userTo) {
+      res.status(STATUS_CODES.NOT_FOUND);
+      throw new Error("User not found");
+    }
+    if (userFrom.cash < amount) {
+      res.status(STATUS_CODES.BAD_REQUEST);
+      throw new Error("Not enough cash");
+    }
+    userFrom.cash -= amount;
+    userTo.cash += amount;
+    writeUsersToFile(users);
+    res.send(userFrom);
+  } catch (error) {
+    next(error);
+  }
 };

@@ -5,6 +5,7 @@ import {
   depositToUser,
   getAllUsers,
   getUserById,
+  transferFromUser,
   withdrawFromUser,
 } from "../controller/userController.js";
 const userRoutes = Router();
@@ -21,5 +22,7 @@ userRoutes.put("/:id/deposit", depositToUser);
 userRoutes.put("/:id/withdraw", withdrawFromUser);
 //Delete user
 userRoutes.delete("/:id", deleteUser);
+//Transfer from one user to another
+userRoutes.put("/:from/transfer/:to", transferFromUser);
 
 export default userRoutes;
